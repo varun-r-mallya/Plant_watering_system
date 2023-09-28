@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Plant Watering System</title>
+
+        <!-- Load external CSS styles -->
+        <link rel="stylesheet" href="styles.css">
+
+    <!-- Load external CSS styles -->
+
+    <link rel="stylesheet" href="styler.css">
+
+</head>
+<body>
+    <style>
+        /* Remove underline and highlighting from all hyperlinks */
+        a {
+            text-decoration: none;
+            color: inherit; /* Use the same text color as the surrounding text */
+        }
+    </style>
+       
+    <center>
+    <!-- Load external JavaScript -->
+    <script src="scuript.js"></script>
+    <div class="header">
+        <h1><a href="index.html">Plant Watering System</a></h1>
+        <p>Website to control the Plant Watering System</p>
+      </div>
+      <div class="navbar">
+        <a href="temperature.html">Temperature</a>
+        <a href="#">Pl@ntnet AI</a>
+        <a href ="graph.html">Graph</a>
+        <a href="targetset.html">Target Moisture set</a>
+        <a href="manualtoggle.html" class="right">Manual Toggle</a>
+      </div>
+  
+  <!-- Rounded switch -->
+  <div class="row">
+    <div class="main">
+  <div class="toggle-container">
+  <label class="switch">
+    <input type="checkbox" id="toggleSwitch">
+    <span class="slider round"></span>
+  </label>
+  </div>
+  <script>
+        const toggleSwitch = document.getElementById("toggleSwitch");
+
+toggleSwitch.addEventListener("change", function() {
+    if (toggleSwitch.checked) {
+        const formData = {
+                "data": {
+                    "PUMP STATUS": "ON"
+                },
+                "query": "select * from ZyaZm8AMFF59ektW where PUMP STATUS='OFF'"
+            };
+
+            fetch("https://api.apispreadsheets.com/data/ZyaZm8AMFF59ektW/", {
+                method: "POST",
+                body: JSON.stringify(formData),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(res => {
+                if (res.status === 201) {
+                    // SUCCESS: Handle the success case here
+                    
+                } else {
+                    // ERROR: Handle the error case here
+                    alert("There was an error :(");
+                }
+            })
+            .catch(error => {
+                // Handle any network or other errors here
+                console.error("Error:", error);
+                alert("There was an error :(");
+            });
+            
+    } else {
+        const formData = {
+                "data": {
+                    "PUMP STATUS": "OFF"
+                },
+                "query": "select * from ZyaZm8AMFF59ektW where PUMP STATUS='ON'"
+            };
+
+            fetch("https://api.apispreadsheets.com/data/ZyaZm8AMFF59ektW/", {
+                method: "POST",
+                body: JSON.stringify(formData),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(res => {
+                if (res.status === 201) {
+                    // SUCCESS: Handle the success case here
+                } else {
+                    // ERROR: Handle the error case here
+                    alert("There was an error :(");
+                }
+            })
+            .catch(error => {
+                // Handle any network or other errors here
+                console.error("Error:", error);
+                alert("There was an error :(");
+            });
+            
+    }
+});
+</script>
+</div></div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap">
+
+    <style> p {
+        font-family: 'Roboto', sans-serif;
+    }</style>
+    <p>Turn Pump ON or OFF</p>
+
+</center>
+</body>
+</html>
