@@ -1,0 +1,93 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Plant Watering System</title>
+
+        <!-- Load external CSS styles -->
+        <link rel="stylesheet" href="styles.css">
+
+    </head>
+
+    <body>
+        <script src="scripts.js"></script>
+        <style>
+        /* Remove underline and highlighting from all hyperlinks */
+        a {
+            text-decoration: none;
+            color: inherit; /* Use the same text color as the surrounding text */
+        }
+    </style>
+        <div class="header">
+  <a href="index.html"><h1>Plant Watering System</h1></a>
+  <p>Website to control the Plant Watering System</p>
+</div>
+<div class="navbar">
+  <a href="temperature.html">Temperature</a>
+  <a href="#">Pl@ntnet AI</a>
+  <a href ="graph.html">Graph</a>
+  <a href="targetset.html">Target Moisture set</a>
+  <a href="manualtoggle.html" class="right">Manual Toggle</a>
+</div>
+<div class="row">
+  <div class="main">
+    <style>
+      /* Replace this with your temperature gauge styling */
+      .temperature-gauge {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          background-color: #f0f0f0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 20px;
+      }
+  </style>
+    <center>
+    <div class="temperature-gauge" id="temperatureGauge">Loading...</div>
+
+    <script>
+        // Function to fetch data from the API
+        async function fetchData() {
+            try {
+                const response = await fetch("https://api.apispreadsheets.com/data/<add code here>/");
+                const data = await response.json();
+                return data.data; // Assuming the JSON data is in data.data
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                return [];
+            }
+        }
+
+        // Function to update the temperature gauge with the latest temperature
+        async function updateTemperature() {
+            const data = await fetchData();
+            const latestEntry = data[data.length - 1];
+
+            // Extract temperature from the latest entry
+            const temperature = latestEntry.Temperature;
+
+            // Display the temperature in the gauge
+            const temperatureGauge = document.getElementById('temperatureGauge');
+            temperatureGauge.textContent = temperature + "°C"; // Modify this to display in desired format
+        }
+
+        // Call the updateTemperature function initially and every 10 seconds
+        updateTemperature();
+        setInterval(updateTemperature, 60000); // Update every 10 seconds
+    </script>
+    <h1>Temperature</h1> 
+</center>
+  </div>
+</div>
+        
+        <div class="footer">
+  <h2>made by Varun R Mallya</h2>
+</div>       
+        
+    </body>
+
+</html> 

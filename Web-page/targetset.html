@@ -1,0 +1,108 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Plant Watering System</title>
+
+        <!-- Load external CSS styles -->
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+
+    <body>
+      <style>
+        /* Remove underline and highlighting from all hyperlinks */
+        a {
+            text-decoration: none;
+            color: inherit; /* Use the same text color as the surrounding text */
+        }
+    </style>
+
+        <div class="header">
+  <h1><a href="index.html">Plant Watering System</a></h1>
+  <p>Website to control the Plant Watering System</p>
+</div>
+<div class="navbar">
+  <a href="temperature.html">Temperature</a>
+  <a href="#">Pl@ntnet AI</a>
+  <a href ="graph.html">Graph</a>
+  <a href="targetset.html">Target Moisture set</a>
+  <a href="manualtoggle.html" class="right">Manual Toggle</a>
+</div>
+<div class="row">
+  <div class="main"><center>
+    <div>
+        <h2>Current Target Moisture Level:</h2>
+        <p id="currentTargetMoisture">Loading...</p>
+    </div>
+
+    <div>
+        <label for="newTargetMoisture">Enter New Target Moisture Level:</label>
+        <input type="number" id="newTargetMoisture" min="1">
+        <button onclick="setTargetMoisture()">Set Target</button>
+    </div>
+
+    <script>
+        // Function to fetch the current target moisture level and update the display
+        function fetchCurrentTargetMoisture() {
+            $.get("https://api.apispreadsheets.com/data/<add code here>/", function (data) {
+                const currentTargetMoisture = data.data[0]['Target moisture'];
+                $("#currentTargetMoisture").text(currentTargetMoisture);
+                $("#newTargetMoisture").attr("placeholder", currentTargetMoisture); // Set placeholder with current value
+            });
+        }
+
+        // Function to set the target moisture level
+        function setTargetMoisture() {
+            const newTargetMoisture = parseInt($("#newTargetMoisture").val());
+
+            if (newTargetMoisture > 0) {
+                // Get the current target moisture value from the display
+                const currentTargetMoisture = parseInt($("#currentTargetMoisture").text());
+
+                const jsonData = {
+                    "data": {
+                        "Target moisture": newTargetMoisture
+                    },
+                    "query": `select * from <add code here> where "Target moisture"='${currentTargetMoisture}'`
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "https://api.apispreadsheets.com/data/<add code here>/",
+                    data: JSON.stringify(jsonData),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function () {
+                        alert("Target moisture set successfully!");
+                        fetchCurrentTargetMoisture(); // Refresh current target moisture
+                        $("#newTargetMoisture").val(""); // Clear the input field
+                    },
+                    error: function () {
+                        fetchCurrentTargetMoisture();
+                        $("#newTargetMoisture").val("");
+                        //alert("Error setting target moisture.");
+                    }
+                });
+            } else {
+                alert("Target moisture must be greater than 0.");
+            }
+        }
+
+        // Fetch and display the current target moisture on page load
+        fetchCurrentTargetMoisture();
+    </script>
+  </center></div>
+</div>
+        
+        <div class="footer">
+  <h2>made by Varun R Mallya</h2>
+</div>
+        <!-- Load external JavaScript -->
+        <script src="scripts.js"></script>
+        
+    </body>
+
+</html>
