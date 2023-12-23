@@ -11,7 +11,6 @@ const char* password = "<add code here>"; //wifi password
 const char *GScriptId = "<add code here>";
 const char *cellAddress = "A1";
 // Enter command (insert_row or append_row) and your Google Sheets sheet name (default is Sheet1):
-String payload_base =  "{\"command\": \"append_row\", \"sheet_name\": \"sheet1\", \"values\": ";
 String payload = "";
 
 // Google Sheets setup (do not edit)
